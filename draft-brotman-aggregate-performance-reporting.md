@@ -23,8 +23,21 @@ organization="Comcast, Inc"
  [author.address]
  email="alex_brotman@comcast.com"
 
+[[author]]
+initials="T."
+surname="Corbett"
+fullname="Tom Corbett"
+Organization="Iterable"
+  [author.address]
+  email="tom.corbett@iterable.com"
 
-
+[[author]]
+initials="E."
+surname="Gustafsson"
+fullname="Emil Gustafsson"
+Organization="Google"
+  [author.address]
+  email="emgu@google.com"
 
 %%%
 
