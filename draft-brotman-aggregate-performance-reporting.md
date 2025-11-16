@@ -63,8 +63,8 @@ with reputation change could allow those sending entities to have more
 insight into how their actions impact some of these reputation systems.
 
 Proposed below will be a document format, as well as methods for report 
-destination discovery and delivery methods.
-
+destination discovery and delivery methods.  The reporting data contained
+within will focus on domain-based reputation data, specifically DKIM.
 
 # Terminology
 
@@ -75,15 +75,24 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 
 # Background
 
+
+
+
+
+
+
+
+
+
 # Glossary
 
 DKIM - DomainKeys Identified Mail
 MBP - Mailbox Provider
 
-# Destination Discovery
+# Destination Discovery via DNS Record
 
 In order to discover where the reports will be delivered, the report generator 
-will perform a DNS lookup against the domain used with the valid DKIM 
+will perform a DNS lookup against the domain used with the valid DKIM [@!RFC6376]
 signatures.  The lookup will also leverage the selector.  An example signature 
 might be:
 
@@ -93,11 +102,13 @@ And the resulting TXT record would be:
 
 sel1._aprf._domainkey.foo.example.org 
 
-There is the option to use a wildcard [RFC1034] to the left of the '_aprf' 
+Effectively: <s value>._aprf._domainkey.<d value>
+
+There is the option to use a wildcard [@?RFC1034] to the left of the '_aprf' 
 label.  This would use the same record for all selectors, unless specifically 
 stated in the DNS system. 
 
-# Record Attributes
+## Record Attributes
 
 v:   This MUST always exist, and the value must always be "APRFv1".  Failure 
      to do so should be treated as an invalid record, and the record MUST 
@@ -112,15 +123,15 @@ rua: This is the destination address for the report data.  The value must
 
 sdi: An optional attribute which helps segment the data. The contents are 
      a header and separator character, separated by a comma.  Defined in 
-     the section below.
+     the section below. The separator character MUST NOT be any of ";=,".
 
-# Signer-Defined Identifiers (SDI)
+## Signer-Defined Identifiers (SDI)
 
 There is an attribute ('sdi') by which the DKIM domain holder can share a 
 header name which can help segment the data contained within the report.  
 The attribute is defined in two parts, separated by a comma (",").  The 
-parts MUST be the RFC5322 Header Name, and then a single character 
-separator.  The separator MUST be a printable ASCII [RFC20] character, 
+parts MUST be the [@?RFC5322] Header Name, and then a single character 
+separator.  The separator MUST be a printable ASCII [@?RFC20] character, 
 and MUST NOT be ";", "=", or ",".
 
 The header field MUST be DKIM signed by the related signature.
@@ -142,7 +153,7 @@ Signer-Info:SenderCommonName^BrandName^RegionalDistinction^CampaignName
 Use of this by the report generator is optional.  The report generator MAY 
 ignore this attribute.
 
-## Note about Usage of SDI
+### Note about Usage of SDI
 
 It's quite possible that two signing entities could attempt to use the same 
 header field.  This is not explicitly forbidden, however, if each entity 
@@ -153,7 +164,7 @@ unique to their entity.
 Additionally, a signer should take caution when creating segment names.  These 
 segment names may create a data leakage.  Those names could appear in reports.
 
-# DNS Record Samples
+## DNS Record Samples
 
 v=APRFv1;rua:mailto:reports@example.org;
 
@@ -166,7 +177,7 @@ there should be destination validation, discussed below.
 
 # Report Format & Contents
 
-The report format MUST be valid JSON.
+The report format MUST be valid JSON [@!RFC8259].
 
 ## Report Time Period
 
@@ -179,6 +190,13 @@ MUST end at 2359.59UTC on that day.
 
 The “header” portion of the report will include data about the entity creating 
 the report.  The fields will be:
+
+version:       This is a string provided by the report generator. This allows
+               the MBP to notate when there is a deviation from previous
+               versions as it relates to the data contained within.  An
+               example might be that the MBP adds or removes some action
+               from the "positive" feedback field, and therefore alters
+               the version string to illustrate the dmarcation.
 
 source:        The common name of the reporting entity.  If a company is 
                reporting on behalf of a MBP, that MBP name should be in 
@@ -378,5 +396,14 @@ for the MBP to disclose precisely what each category consists of.
 A report generator MAY choose to divulge some or all of this information 
 via the "extra_info" field in the report header.
 
+## Report Samples
+
+### Report Sample 1
+
+<{{report_sample_1.json}}
+
+### Report Sample 2
+
+<{{report_sample_2.json}}
 
 {backmatter}
