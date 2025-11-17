@@ -73,17 +73,6 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 "OPTIONAL" in this document are to be interpreted as described in
 [@?RFC2119].
 
-# Background
-
-
-
-
-
-
-
-
-
-
 # Glossary
 
 DKIM - DomainKeys Identified Mail
@@ -123,16 +112,16 @@ rua: This is the destination address for the report data.  The value must
 
 sdi: An optional attribute which helps segment the data. The contents are 
      a header and separator character, separated by a comma.  Defined in 
-     the section below. The separator character MUST NOT be any of ";=,".
+     the section below. The separator character MUST NOT be any of ';=,'.
 
 ## Signer-Defined Identifiers (SDI)
 
 There is an attribute ('sdi') by which the DKIM domain holder can share a 
 header name which can help segment the data contained within the report.  
-The attribute is defined in two parts, separated by a comma (",").  The 
+The attribute is defined in two parts, separated by a comma (',').  The 
 parts MUST be the [@?RFC5322] Header Name, and then a single character 
 separator.  The separator MUST be a printable ASCII [@?RFC20] character, 
-and MUST NOT be ";", "=", or ",".
+and MUST NOT be ';', '=', or ','.
 
 The header field MUST be DKIM signed by the related signature.
 
@@ -144,9 +133,9 @@ Example:
 
 sel1._aprf._domainkey.example.org TXT "v=ARPFv1; … ; sdi=Signer-Info,^"
 
-Where the header name is "Signer-Info", and the separator is "^".
+Where the header name is "Signer-Info", and the separator is '^'.
 
- An example header:
+An example header:
 
 Signer-Info:SenderCommonName^BrandName^RegionalDistinction^CampaignName
 
@@ -263,11 +252,11 @@ Sample segment with signer defined identifier:
 
 # Classification
 
-This segment is meant to disclose the opinion of the MBP that received the 
-message.  This could include values such as: inbox, unwanted, forwarded, 
+Each segment disclosed in the report should share information about placement 
+of the message.  This could include values such as: inbox, unwanted, forwarded,
 promotional, or some other placement information. These are scalar values, 
 and expected to be created as "buckets".  Below 1000, these buckets should 
-be buckets of 100.  Above 1000, the bucket should be at 1000 increments.
+be buckets of 10.  Above 1000, the bucket should be at 1000 increments.
 
 These metrics should pertain to the reporting period, and measure the number 
 of messages in each category that were received during that time. 
@@ -319,11 +308,15 @@ The attachment name MUST be in the form:
 
 <yyyymmdd>_<DKIM domain>_<DKIM selector>_<source>
 
+If the "source" has any spaces, those should be removed.
+
 The suffix for the file MUST be ".json".
 
 The subject MUST be in the form:
 
 ARPF: <yyyymmdd>_<DKIM domain>_<DKIM selector>_<source>
+
+If the "source" has any spaces, those should be removed.
 
 The Content-Type for the message MUST be "multipart/report".  The 
 Content-Type for the report attachment MUST be "application/json".  If 
@@ -351,6 +344,7 @@ And the value MUST be "v=APRFv1;" or "v=APRFv1"
 The <selector> or <DKIM domain> may be a wildcard entry.  This would allow 
 all portions to the left to go to that destination.
 
+This is similar to the validation performed for DMARC [@?RFC7489].
 
 # Security Considerations
 
