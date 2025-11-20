@@ -1,7 +1,7 @@
 [
     {
         "header": {
-            "version": 42
+            "version": 42,
             "source": "Receiver MBP, Inc.",
             "dkim_domain": "example.com",
             "dkim_selector": "selector1",

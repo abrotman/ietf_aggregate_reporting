@@ -1,5 +1,5 @@
 %%%
-Title = "Aggregate Performanc Reporting"
+Title = "Aggregate Performance Reporting"
 abbrev = "APR"
 category = "std"
 docName = "draft-brotman-aggregate-performance-reporting-00"
@@ -7,7 +7,7 @@ ipr = "trust200902"
 area = "Applications"
 keyword = [""]
 
-date = 2025-11-15T00:00:00Z
+date = 2025-11-20T00:00:00Z
 
 [seriesInfo]
 name = "Internet-Draft"
@@ -82,12 +82,12 @@ MBP - Mailbox Provider
 
 In order to discover where the reports will be delivered, the report generator 
 will perform a DNS lookup against the domain used with the valid DKIM [@!RFC6376]
-signatures.  The lookup will also leverage the selector.  An example signature 
-might be:
+signatures.  The lookup will also leverage the selector attached to the signature.
+An example signature might be:
 
 DKIM-Signature: v=1;a=rsa-sha256;c=relaxed/relaxed;s=sel1;d=foo.example.org;...
 
-And the resulting TXT record would be:
+And the resulting TXT record lookup would be:
 
 sel1._aprf._domainkey.foo.example.org 
 
@@ -185,7 +185,7 @@ version:       This is a string provided by the report generator. This allows
                versions as it relates to the data contained within.  An
                example might be that the MBP adds or removes some action
                from the "positive" feedback field, and therefore alters
-               the version string to illustrate the dmarcation.
+               the version string to illustrate the demarcation.
 
 source:        The common name of the reporting entity.  If a company is 
                reporting on behalf of a MBP, that MBP name should be in 
@@ -249,6 +249,14 @@ Sample segment with signer defined identifier:
 "engagement": { ... }
 },
 ...
+
+## Empty SDI
+
+In the event of an absent SDI, either by the Report Generator or the Signer,
+then the report will essentially be "flat".  There will be just one stanza,
+without a reference a segment.  A sample is provided below. 
+
+NOTE:specify which sample below
 
 # Classification
 
