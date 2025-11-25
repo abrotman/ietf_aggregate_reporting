@@ -11,7 +11,7 @@ date = 2025-11-25T00:00:00Z
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-brotman-aggregate-performance-reporting-03"
+value = "draft-brotman-aggregate-performance-reporting-00"
 stream = "IETF"
 status = "standard"
 
