@@ -7,7 +7,7 @@ ipr = "trust200902"
 area = "Applications"
 keyword = [""]
 
-date = 2025-11-20T00:00:00Z
+date = 2025-11-25T00:00:00Z
 
 [seriesInfo]
 name = "Internet-Draft"
@@ -113,6 +113,12 @@ rua: This is the destination address for the report data.  The value must
 sdi: An optional attribute which helps segment the data. The contents are 
      a header and separator character, separated by a comma.  Defined in 
      the section below. The separator character MUST NOT be any of ';=,'.
+     If both the header name and the separator are not defined, the 
+     'sdi' declaration MUST be ignored.
+
+### DNS Record ABNF
+
+TODO
 
 ## Signer-Defined Identifiers (SDI)
 
@@ -131,7 +137,7 @@ limit of four parts within the header.
 
 Example:
 
-sel1._aprf._domainkey.example.org TXT "v=ARPFv1; … ; sdi=Signer-Info,^"
+sel1._aprf._domainkey.example.org TXT "v=ARPFv1;...;sdi=Signer-Info,^"
 
 Where the header name is "Signer-Info", and the separator is '^'.
 
@@ -177,7 +183,7 @@ MUST end at 2359.59UTC on that day.
 
 ### Header
 
-The “header” portion of the report will include data about the entity creating 
+The "header" portion of the report will include data about the entity creating 
 the report.  The fields will be:
 
 version:       This is a string provided by the report generator. This allows
@@ -192,9 +198,11 @@ source:        The common name of the reporting entity.  If a company is
                this field.
 
 dkim_domain:   The domain which is being reported on.  This should be from 
-               the d= field of the message.  If the report is going to roll 
+               the d= field of the signature.  If the report is going to roll 
                up data to the higher level domain, the field should show 
-               this as an asterisk (e.g., "*.example.org").
+               this as an asterisk (e.g., "*.example.org").  The domain
+               may not be aligned with the 5322.From domain as the report is
+               based on the signing domain.
 
 dkim_selector: The selector which is being reported on.  If this is an 
                aggregate report that is rolling up data, the reporting 
@@ -233,7 +241,7 @@ and "neutral" data points.
 
 Sample default segment (no signer defined identifier):
 
-…
+...
 {
 "classification": { ... },
 "engagement": { ... }
@@ -256,7 +264,7 @@ In the event of an absent SDI, either by the Report Generator or the Signer,
 then the report will essentially be "flat".  There will be just one stanza,
 without a reference a segment.  A sample is provided below. 
 
-NOTE:specify which sample below
+NOTE:specify which sample below, currently sample #2
 
 # Classification
 
@@ -277,7 +285,6 @@ Sample segment:
 "unwanted": 500
 },
 ...
-
 
 The report generator MAY provide information about these categories in the 
 "extra_info" header.
@@ -331,9 +338,7 @@ Content-Type for the report attachment MUST be "application/json".  If
 there is a plain-text portion of the report, the Content-Type MUST 
 be "text/plain".
 
-
 Reports will be delivered via SMTP to the destination address.
-
 
 NOTE: TBD Compression?
 NOTE: If a later version shows up with the same date period, does it 
@@ -353,6 +358,8 @@ The <selector> or <DKIM domain> may be a wildcard entry.  This would allow
 all portions to the left to go to that destination.
 
 This is similar to the validation performed for DMARC [@?RFC7489].
+
+TODO: proper ABNF
 
 # Security Considerations
 
