@@ -7,7 +7,7 @@ ipr = "trust200902"
 area = "Applications"
 keyword = [""]
 
-date = 2025-12-10T00:00:00Z
+date = 2026-01-07T00:00:00Z
 
 [seriesInfo]
 name = "Internet-Draft"
@@ -77,6 +77,8 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 
 DKIM - DomainKeys Identified Mail
 MBP - Mailbox Provider
+RUA - The destination for reports, a list of email addresses
+SDI - Signer-Defined Identifier
 
 # Destination Discovery via DNS Record
 
@@ -96,6 +98,11 @@ Effectively: <s value>._aprf._domainkey.<d value>
 There is the option to use a wildcard [@?RFC1034] to the left of the '_aprf' 
 label.  This would use the same record for all selectors, unless specifically 
 stated in the DNS system. 
+
+A signing entity can opt to mix wildcard and explicit selector defintions. As
+defined with DNS, the explicit definition gets precedence over the wildcard
+result.  In the absence of an explicit selector-based record, the wildcard
+record would then be used.
 
 ## Record Attributes
 
