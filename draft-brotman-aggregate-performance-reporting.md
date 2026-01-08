@@ -64,7 +64,7 @@ relevant metrics.
 
 Proposed below will be a document format, as well as methods for report 
 destination discovery and delivery methods.  The reporting data contained
-within will focus on domain-based reputation data, specifically DKIM.
+within will focus on domain-based, specifically DKIM, metrics.
 
 # Terminology
 
