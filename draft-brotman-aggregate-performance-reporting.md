@@ -58,9 +58,9 @@ little insight into these reputation systems that are directly impacted by
 their actions. That lack of usable information directly impacts their 
 ability to take future corrective actions.
 
-A report which contains some elements of reputation and metrics associated 
-with reputation change could allow those sending entities to have more 
-insight into how their actions impact some of these reputation systems.
+A report which contains some metrics impacting reputation could allow these 
+sending entities to have more insight into how their actions impact 
+relevant metrics.
 
 Proposed below will be a document format, as well as methods for report 
 destination discovery and delivery methods.  The reporting data contained
@@ -246,6 +246,11 @@ placement information, while "engagement" is meant to disclose what
 happens after the message is classified, and include "positive", "negative", 
 and "neutral" data points. 
 
+Each of the "classification" and "engagement" portions of the report are
+optional, and the decision to include that data will be made by the report
+generator.  It may be that the report generator only wishes to share some
+portion of the data, or the data is simply not available.
+
 Sample default segment (no signer defined identifier):
 
 ...
@@ -278,8 +283,12 @@ NOTE:specify which sample below, currently sample #2
 Each segment disclosed in the report should share information about placement 
 of the message.  This could include values such as: inbox, unwanted, forwarded,
 promotional, or some other placement information. These are scalar values, 
-and expected to be created as "buckets".  Below 1000, these buckets should 
-be buckets of 10.  Above 1000, the bucket should be at 1000 increments.
+and recommended to be created as "buckets".  Below 1000, these buckets should 
+be buckets of 10.  Above 1000, the bucket should be at 1000 increments. While
+the recommendation is to use buckets, the decision to do so is left to the
+report generator. Additionally, when buckets are used during reporting, it's
+suggested that the report generator will use the upper bound of the bucket
+for values.
 
 These metrics should pertain to the reporting period, and measure the number 
 of messages in each category that were received during that time. 
