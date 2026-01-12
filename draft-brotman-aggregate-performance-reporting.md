@@ -7,7 +7,7 @@ ipr = "trust200902"
 area = "Applications"
 keyword = [""]
 
-date = 2026-01-07T00:00:00Z
+date = 2026-01-09T00:00:00Z
 
 [seriesInfo]
 name = "Internet-Draft"
@@ -283,12 +283,12 @@ NOTE:specify which sample below, currently sample #2
 Each segment disclosed in the report should share information about placement 
 of the message.  This could include values such as: inbox, unwanted, forwarded,
 promotional, or some other placement information. These are scalar values, 
-and recommended to be created as "buckets".  Below 1000, these buckets should 
-be buckets of 10.  Above 1000, the bucket should be at 1000 increments. While
-the recommendation is to use buckets, the decision to do so is left to the
-report generator. Additionally, when buckets are used during reporting, it's
-suggested that the report generator will use the upper bound of the bucket
-for values.
+and recommended to be created as "buckets".  While the recommendation is to 
+use buckets, the decision to do so is left to the report generator. 
+Additionally, when buckets are used during reporting, it's suggested that 
+the report generator will use the upper bound of the bucket for values.  
+The size (10, 10k, etc) of the buckets will be a decision made by the 
+report generator.
 
 These metrics should pertain to the reporting period, and measure the number 
 of messages in each category that were received during that time. 
