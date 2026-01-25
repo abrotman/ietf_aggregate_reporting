@@ -168,11 +168,11 @@ segment names may create a data leakage.  Those names could appear in reports.
 
 ## DNS Record Samples
 
-v=APRFv1;rua:mailto:reports@example.org;
+v=APRFv1;rua=mailto:reports@example.org;
 
-v=APRFv1;rua:mailto:reports@example.org,mailto:reports2@example2.net;
+v=APRFv1;rua=mailto:reports@example.org,mailto:reports2@example2.net;
 
-v=APRFv1;rua:mailto:reports@example.org;sdi=MsgInfo,^;
+v=APRFv1;rua=mailto:reports@example.org;sdi=MsgInfo,^;
 
 If one of the destinations does not align with the sending RFC5322.From domain, 
 there should be destination validation, discussed below.
