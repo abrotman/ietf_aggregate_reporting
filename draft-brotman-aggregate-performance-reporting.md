@@ -356,7 +356,14 @@ be "text/plain".
 
 Reports will be delivered via SMTP to the destination address.
 
-NOTE: TBD Compression?
+## Compression
+
+A report receiver SHOULD be able to receive messages that are compressed
+using gzip [?@RFC1952], as a report generator MAY opt to compress the
+attachment for the report.  If the attachment is to be compressed, it 
+MUST have the Content-Type of "application/gzip", and a file extension
+of ".json.gz".
+
 NOTE: If a later version shows up with the same date period, does it 
 overwrite, discard?  Should there be a flag showing it to be an update?
 
