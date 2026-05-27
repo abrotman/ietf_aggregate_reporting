@@ -7,7 +7,7 @@ ipr = "trust200902"
 area = "Applications"
 keyword = [""]
 
-date = 2026-03-17T00:00:00Z
+date = 2026-05-27T00:00:00Z
 
 [seriesInfo]
 name = "Internet-Draft"
@@ -404,6 +404,12 @@ alignment, domain reputation, or other considerations.  A report generator
 is not required to send reports to every entity requesting these reports.
 
 # IANA Considerations
+
+# FAQ
+
+* Can the SDI (segment) configuration be leveraged to differentiate reporting for promotional/transactional, or even at the campaign or audience segment level? If so, how does this mechanism work?
+* How are reporting email addresses are defined? If these must match the DKIM domain, setting up reporting addresses becomes complex for an ESP.
+
 
 # Appendix
 
