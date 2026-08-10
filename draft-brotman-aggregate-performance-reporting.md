@@ -32,12 +32,19 @@ Organization="Iterable"
   email="tom.corbett@iterable.com"
 
 [[author]]
+initials="J."
+surname="Duplant"
+fullname="Julient Duplant"
+organization="Google"
+  [author.address]
+  email="duplant@google.com"
+
+[[author]]
 initials="E."
 surname="Gustafsson"
 fullname="Emil Gustafsson"
-Organization="Google"
   [author.address]
-  email="emgu@google.com"
+  email="the@emailer.se"
 
 %%%
 
@@ -144,13 +151,18 @@ limit of four parts within the header.
 
 Example:
 
-sel1._aprf._domainkey.example.org TXT "v=ARPFv1;...;sdi=Signer-Info,^"
+sel1._aprf._domainkey.example.org TXT "v=APRFv1;...;sdi=Signer-Info,^"
 
 Where the header name is "Signer-Info", and the separator is '^'.
 
 An example header:
 
-Signer-Info:SenderCommonName^BrandName^RegionalDistinction^CampaignName
+Signer-Info: SenderCommonName^BrandName^RegionalDistinction^CampaignName
+
+Some other examples for the same Signer:
+
+Signer-Info: SenderCommonName^BrandName^Transactional
+Signer-Info: SenderCommonName^BrandName^EngagementTimespan^CampaignName2
 
 Use of this by the report generator is optional.  The report generator MAY 
 ignore this attribute.
@@ -345,7 +357,7 @@ The suffix for the file MUST be ".json".
 
 The subject MUST be in the form:
 
-ARPF: <yyyymmdd>_<DKIM domain>_<DKIM selector>_<source>
+APRF: <yyyymmdd>_<DKIM domain>_<DKIM selector>_<source>
 
 If the "source" has any spaces, those should be removed.
 
