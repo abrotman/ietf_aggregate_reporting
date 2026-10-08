@@ -2,16 +2,16 @@
 Title = "Aggregate Performance Reporting"
 abbrev = "APR"
 category = "std"
-docName = "draft-brotman-aggregate-performance-reporting-00"
+docName = "draft-brotman-aggregate-performance-reporting-01"
 ipr = "trust200902"
 area = "Applications"
 keyword = [""]
 
-date = 2026-05-27T00:00:00Z
+date = 2026-09-08T00:00:00Z
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-brotman-aggregate-performance-reporting-00"
+value = "draft-brotman-aggregate-performance-reporting-01"
 stream = "IETF"
 status = "standard"
 
@@ -29,7 +29,7 @@ surname="Corbett"
 fullname="Tom Corbett"
 Organization="Iterable"
   [author.address]
-  email="tom.corbett@iterable.com"
+  email="tom.corbett@hightouch.com"
 
 [[author]]
 initials="J."
@@ -106,6 +106,12 @@ There is the option to use a wildcard [@?RFC1034] to the left of the '_aprf'
 label.  This would use the same record for all selectors, unless specifically 
 stated in the DNS system. 
 
+Additionally, the publishing entity may opt to omit the selector from the 
+declaration, and cover all selectors. This is similar to a wildcard record.
+The record format would be:
+
+_aprf._domainkey.foo.example.org 
+
 A signing entity can opt to mix wildcard and explicit selector defintions. As
 defined with DNS, the explicit definition gets precedence over the wildcard
 result.  In the absence of an explicit selector-based record, the wildcard
@@ -133,6 +139,18 @@ sdi: An optional attribute which helps segment the data. The contents are
 ### DNS Record ABNF
 
 TODO
+
+## Order of Discovery
+
+Assume a message enters a receiving system with a selector of "selector1", and
+domain value of "email.example.org".  When evaluating the records, the 
+receiving system utilize the following order:
+
+1) _aprf._domainkey.email.example.org
+2) *._aprf._domainkey.email.example.org
+3) selector1._domainkey.email.example.org
+
+The most specific match should be applied, the reverse of the list above.
 
 ## Signer-Defined Identifiers (SDI)
 
@@ -445,6 +463,19 @@ for the MBP to disclose precisely what each category consists of.
 
 A report generator MAY choose to divulge some or all of this information 
 via the "extra_info" field in the report header.
+
+## Deployment Considerations for Signer
+
+There are a few ways by which the signer can setup their sending stream to
+create some separation in the data.
+
+* Use the SDI - This probably fits most easily with many setups, but requires
+some thought for which header and the data in the header.
+* Use a different d= for each stream/customer.  Consider mkt.example.com and
+txn.example.com, but also cust1.example.com and cust2.example.com.
+* Use a different selector for each stream/customer.  If using a wildcard
+for the declation, this could all go to one destination.  If using a stated
+selector, the destinations could be distinct.
 
 ## Report Samples
 
