@@ -2,16 +2,16 @@
 Title = "Aggregate Performance Reporting"
 abbrev = "APR"
 category = "std"
-docName = "draft-brotman-aggregate-performance-reporting-01"
+docName = "draft-ietf-mailmaint-aprf-01"
 ipr = "trust200902"
 area = "Applications"
 keyword = [""]
 
-date = 2026-09-08T00:00:00Z
+date = 2026-10-31T00:00:00Z
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-brotman-aggregate-performance-reporting-01"
+value = "draft-ietf-mailmaint-aprf-01"
 stream = "IETF"
 status = "standard"
 
@@ -117,6 +117,13 @@ defined with DNS, the explicit definition gets precedence over the wildcard
 result.  In the absence of an explicit selector-based record, the wildcard
 record would then be used.
 
+A message can carry more than one valid DKIM signature, for example when an 
+email service provider signs with its own domain as well as the customer 
+domain. The report generator SHOULD perform the discovery described in this 
+section for each valid signature. Discovering a record does not by itself 
+mean a report will be sent to its destinations. That decision is made 
+separately, as described in Section [Below#Report Data].
+
 ## Record Attributes
 
 v:   This MUST always exist, and the value must always be "APRFv1".  Failure 
@@ -148,7 +155,7 @@ receiving system utilize the following order:
 
 1) _aprf._domainkey.email.example.org
 2) *._aprf._domainkey.email.example.org
-3) selector1._domainkey.email.example.org
+3) selector1._aprf._domainkey.email.example.org
 
 The most specific match should be applied, the reverse of the list above.
 
@@ -204,7 +211,7 @@ v=APRFv1;rua=mailto:reports@example.org,mailto:reports2@example2.net;
 
 v=APRFv1;rua=mailto:reports@example.org;sdi=MsgInfo,^;
 
-If one of the destinations does not align with the sending RFC5322.From domain, 
+If one of the destinations does not align with the DKIM 'd=' domain, 
 there should be destination validation, discussed below.
 
 # Report Format & Contents
@@ -269,12 +276,13 @@ extra_info:    Optional field.  This could be used by the report generator
 ### Body
 
 The second portion is called the "Body", and will include the data.  Within 
-the body, there are a list of segments. Each segment contains a 
-"classification", and "engagement" part in addition to a sender defined 
-identifier, if applicable.  The "classification" section is meant to disclose 
-placement information, while "engagement" is meant to disclose what 
-happens after the message is classified, and include "positive", "negative", 
-and "neutral" data points. 
+the body, there may be a list of segments. The segment itself will be noted
+as a JSON list of strings as it matches the segments represented.  Each 
+segment contains a "classification", and "engagement" part in addition to a 
+sender defined identifier, if applicable.  The "classification" section is 
+meant to disclose placement information, while "engagement" is meant to 
+disclose what happens after the message is classified, and include "positive", 
+"negative", and "neutral" data points. 
 
 Each of the "classification" and "engagement" portions of the report are
 optional, and the decision to include that data will be made by the report
@@ -283,22 +291,22 @@ portion of the data, or the data is simply not available.
 
 Sample default segment (no signer defined identifier):
 
-...
+~~~
 {
 "classification": { ... },
 "engagement": { ... }
 },
-...
+~~~
 
 Sample segment with signer defined identifier:
 
-...
+~~~
 {
-"segment": "ExampleCustomerID",
+"segment": ["ExampleCustomerID","Segment2"],
 "classification": { ... },
 "engagement": { ... }
 },
-...
+~~~
 
 ## Empty SDI
 
@@ -386,6 +394,10 @@ be "text/plain".
 
 Reports will be delivered via SMTP to the destination address.
 
+NOTE: I'd like to suggest that if the discovery was based on a wildcard
+record that the <DKIM Selector> above be an "!", or we just omit it
+completely (and have two underscores in a row).
+
 ## Compression
 
 A report receiver SHOULD be able to receive messages that are compressed
@@ -394,8 +406,10 @@ attachment for the report.  If the attachment is to be compressed, it
 MUST have the Content-Type of "application/gzip", and a file extension
 of ".json.gz".
 
-NOTE: If a later version shows up with the same date period, does it 
-overwrite, discard?  Should there be a flag showing it to be an update?
+## Duplicate Reports
+
+If a report should appear later that matches the same report name
+and time period, that data should overwrite previous data.
 
 # Destination Validation
 
@@ -432,6 +446,9 @@ Report generators may not wish to send reports to all of the destinations
 requested.  The decision on destinations could be related to 5322.From 
 alignment, domain reputation, or other considerations.  A report generator 
 is not required to send reports to every entity requesting these reports.
+
+This applies equally when a message carries multiple valid signatures and 
+the discovery in Section 4 finds more than one record.
 
 # IANA Considerations
 
@@ -476,8 +493,9 @@ txn.example.com, but also cust1.example.com and cust2.example.com.
 * Use a different selector for each stream/customer.  If using a wildcard
 for the declation, this could all go to one destination.  If using a stated
 selector, the destinations could be distinct.
+* Publishing an APRF record requests reports but does not guarantee them. An MBP might not generate APRF reports at all, or might decline to send them for the reasons in Section [Above#Report Data]. Receiving no reports does not by itself mean the record is wrong. A signer can confirm the record is published by querying the names in Section [Above#Order of Discovery]. When a report destination is not aligned with the DKIM domain used in the evaluation, the signer can also check that the destination domain publishes the validation record described in Section [Above#Destination Validation]. 
 
-## Report Samples
+## Report Samples 
 
 ### Report Sample 1
 
