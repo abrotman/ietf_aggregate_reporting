@@ -203,6 +203,15 @@ unique to their entity.
 Additionally, a signer should take caution when creating segment names.  These 
 segment names may create a data leakage.  Those names could appear in reports.
 
+If any of the segments are observed to be NULL, at any location, that MUST
+render the SDI invalid, and it should be ignored. Examples of bad SDI values:
+
+~~~
+:A:B:C
+A::B:C
+A:B:C:
+~~~
+
 ## DNS Record Samples
 
 v=APRFv1;rua=mailto:reports@example.org;
