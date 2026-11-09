@@ -396,7 +396,7 @@ APRF: <yyyymmdd>_<DKIM domain>_<DKIM selector>_<source>
 
 If the "source" has any spaces, those should be removed.
 
-The Content-Type for the message MUST be "multipart/report".  The 
+The Content-Type for the message MUST be "multipart/mixed".  The 
 Content-Type for the report attachment MUST be "application/json".  If 
 there is a plain-text portion of the report, the Content-Type MUST 
 be "text/plain".
